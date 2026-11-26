@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f2">
+  <title>DelhiCare — Hospitals &amp; clinics in Delhi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">  <script src="https://gstatic.com"></script>
+  <script src="https://gstatic.com"></script>
+  <script src="app.js" defer></script>
+
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="display:none">
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 10-8 10S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-locate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></symbol>
+    <symbol id="i-hospital" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21h16M6 21V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13M9 6V3h6v3m-5 15v-4h4v4m-2-11v4m-2-2h4"/></symbol>
+    <symbol id="i-clinic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 10 12 3l9 7M5 9v12h14V9m-7 1v7m-3.5-3.5h7"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18V6m0 9h18v3m-18-1h18m-11-2V9h7a4 4 0 0 1 4 4v2"/><path d="M6 12h1"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M14 3v6h5M9 13h6m-6 4h6"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.4"/><path d="M5 20v-2a4.5 4.5 0 0 1 4.5-4.5h5A4.5 4.5 0 0 1 19 18v2"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2 16 16 0 0 0 16 16 2 2 0 0 0 2-2v-3l-5-2-2 2a12 12 0 0 1-6-6l2-2-2-5Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M7 12h10m-7 5h4"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3 2.7 5.6 6.2.9-4.5 4.4 1.1 6.1L12 16.1l-5.5 2.9 1-6.1-4.4-4.4 6.2-.9L12 3Z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 11v5m0-8v.1"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+  </svg>
+
+  <header class="site-header">
+    <div class="shell header-row">
+      <a class="brand" href="#directory" onclick="switchView('directory')">
+        <svg width="34" height="34" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="#15803d"/><path d="M18 10v16M10 18h16" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg>
+        Delhi<span>Care</span>
+      </a>
+      <nav class="main-nav">
+        <a class="nav-link active" href="#directory" data-view="directory" onclick="switchView('directory')">Find Care</a>
+        <a class="nav-link" href="#beds" data-view="beds" onclick="switchView('beds')">Bed Status</a>
+        <a class="nav-link" href="#reports" data-view="reports" onclick="switchView('reports')">Reports</a>
+      </nav>
+      <div class="header-actions">
+        <button class="button button-outline workspace" type="button" onclick="openStaffModal()"><svg class="icon"><use href="#i-user"/></svg><span>Staff &amp; Admin</span></button>
+        <a href="tel:112" class="emergency"><svg class="icon"><use href="#i-phone"/></svg><span>Emergency</span> 112</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow location-label"><svg class="icon"><use href="#i-pin"/></svg> DELHI, INDIA</div>
+        <h1 id="hero-title">Find the right care.<br><span>Closer to you.</span></h1>
+        <p>Apne nazdeek hospitals aur clinics dhoondhein. Compare facilities, check live bed updates, rates, and doctors in Delhi.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 650 360" width="650" height="360" fill="none"><path d="M0 90h650M0 180h650M0 270h650M160 0v360M325 0v360M490 0v360" stroke="#15803d" stroke-opacity="0.12" stroke-width="2"/><path d="M120 320 C 220 240, 400 140, 560 40" stroke="#15803d" stroke-opacity="0.25" stroke-width="6" stroke-dasharray="10 8"/><circle cx="325" cy="180" r="14" fill="#15803d" fill-opacity="0.2"/><circle cx="325" cy="180" r="6" fill="#15803d"/><circle cx="210" cy="110" r="5" fill="#15803d"/><circle cx="430" cy="230" r="5" fill="#15803d"/></svg>
+        <div class="map-tag"><span class="map-tag-icon"><svg class="icon"><use href="#i-hospital"/></svg></span><span><strong>Delhi NCT</strong><small>Live Hospital &amp; Clinic Directory</small></span></div>
+      </div>
+      <form class="hero-search" id="search-form" onsubmit="event.preventDefault(); renderDirectory();">
+        <div class="search-field"><svg class="icon"><use href="#i-search"/></svg><input id="query" type="search" placeholder="Hospital, clinic, area (e.g. Narela, Rohini) or facility…" oninput="renderDirectory()"></div>
+        <button class="button button-outline location-button" id="locate" type="button" onclick="useMyLocation()"><svg class="icon"><use href="#i-locate"/></svg><span>Use my location</span></button>
+        <button class="button button-primary search-button" type="submit">Search <svg class="icon"><use href="#i-arrow"/></svg></button>
+      </form>
+    </section>
+
+    <p class="location-status" id="location-status" hidden style="margin:12px 0;padding:10px 14px;background:#e8f5e9;border-radius:8px;color:#15803d;font-weight:500;"></p>
+
+    <aside class="notice">
+      <span class="notice-icon"><svg class="icon"><use href="#i-info"/></svg></span>
+      <p><strong>Bed availability can change quickly.</strong> <span>Please call the hospital to confirm before travelling.</span></p>
+      <a href="#beds" onclick="switchView('beds')">Check bed status <svg class="icon"><use href="#i-arrow"/></svg></a>
+    </aside>
+
+    <!-- Main Dynamic View Area -->
+    <section class="explore" id="main-view"></section>
+  </main>
+
+  <footer class="site-footer" style="margin-top:40px;padding:24px 0;border-top:1px solid #e2e8e0;">
+    <div class="shell footer-row" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:15px;">
+      <div>
+        <a class="brand" href="#directory" onclick="switchView('directory')">
+          <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="10" fill="#15803d"/><path d="M18 10v16M10 18h16" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg>
+          Delhi<span>Care</span>
+        </a>
+        <p style="font-size:13px;color:#555;margin-top:4px;">An independent directory for finding care in Delhi.</p>
+      </div>
+      <nav style="display:flex;gap:16px;font-size:14px;">
+        <a href="#reports" onclick="switchView('reports')">Patient Reports</a>
+        <a href="#add" onclick="openAddModal()">Suggest / Add a Clinic</a>
+        <a href="#staff" onclick="openStaffModal()">Staff Workspace</a>
+      </nav>
+      <a class="emergency" href="tel:112"><svg class="icon"><use href="#i-phone"/></svg> Emergency 112</a>
+    </div>
+  </footer>
+
+  <dialog id="modal" style="border:none;border-radius:16px;padding:0;max-width:600px;width:92%;box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+    <div style="padding:22px;position:relative;">
+      <button type="button" onclick="document.getElementById('modal').close()" style="position:absolute;top:16px;right:16px;background:#f1f5f0;border:none;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:18px;">&times;</button>
+      <div id="dialog-content"></div>
+    </div>
+  </dialog>
+</body>
+</html>
