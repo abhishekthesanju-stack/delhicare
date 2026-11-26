@@ -1,11 +1,12 @@
 const firebaseConfig = {
   apiKey: "AIzaSyAKTg6rCJv0bC7LvBMhaqf82BGgePcyDSQ",
   authDomain: "://firebaseapp.com",
-  projectId: "delhicare-live.firebaseapp.com",,
+  projectId: "delhicare-live",
   storageBucket: "delhicare-live.firebasestorage.app",
   messagingSenderId: "529335396789",
   appId: "1:529335396789:web:dad6d3ecc2420a9e4bd1fc"
 };
+
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
