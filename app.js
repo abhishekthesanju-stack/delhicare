@@ -1,7 +1,7 @@
 const firebaseConfig = {
   apiKey: "AIzaSyAKTg6rCJv0bC7LvBMhaqf82BGgePcyDSQ",
   authDomain: "://firebaseapp.com",
-  projectId: "delhicare-live",
+  projectId: "delhicare-live.firebaseapp.com",,
   storageBucket: "delhicare-live.firebasestorage.app",
   messagingSenderId: "529335396789",
   appId: "1:529335396789:web:dad6d3ecc2420a9e4bd1fc"
@@ -50,7 +50,7 @@ const starterHospitals = [
   }
 ];
 
-let facilities = [];
+let facilities = [...starterHospitals];
 let currentTypeFilter = "all";
 let currentBedFilter = "";
 let currentView = "directory";
@@ -58,10 +58,10 @@ let currentView = "directory";
 colRef.onSnapshot(snapshot => {
   if (snapshot.empty) {
     starterHospitals.forEach(item => colRef.add(item));
-    return;
+  } else {
+    facilities = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+    switchView(currentView);
   }
-  facilities = snapshot.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
-  switchView(currentView);
 });
 
 function switchView(view) {
@@ -83,24 +83,25 @@ function renderDirectory() {
   });
 
   const cardsHtml = filtered.length === 0
-    ? "<p style='padding:20px;background:#fff;border-radius:12px;'>Connecting to live cloud database...</p>"
+    ? "<p style='padding:20px;background:#fff;border-radius:12px;'>Koi hospital ya clinic nahi mila.</p>"
     : filtered.map(f => {
         const totalBeds = f.generalBeds + f.icuBeds;
         const bedBadge = totalBeds > 0
           ? "<span style='color:#15803d;font-weight:700;'>Available: " + totalBeds + " Beds (Gen: " + f.generalBeds + ", ICU: " + f.icuBeds + ")</span>"
           : "<span style='color:#dc2626;font-weight:700;'>No Beds Available</span>";
         const distTag = f.distance ? " - <b>" + f.distance.toFixed(1) + " km away</b>" : "";
+        const idArg = f.docId || "";
         return "<article style='background:#fff;border:1px solid #e2e8e0;border-radius:14px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;gap:12px;'>" +
           "<div><div style='display:flex;justify-content:space-between;margin-bottom:8px;'>" +
           "<span style='font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;background:#dcfce7;color:#15803d;'>" + f.type + "</span>" +
-          "<span style='font-size:12px;color:#15803d;font-weight:600;'>● " + f.updatedAt + "</span></div>" +
+          "<span style='font-size:12px;color:#15803d;font-weight:600;'>Live</span></div>" +
           "<h3 style='font-size:18px;margin-bottom:4px;'>" + f.name + "</h3>" +
           "<p style='font-size:13px;color:#555;margin-bottom:10px;'>Location: " + f.area + distTag + "</p>" +
           "<div style='background:#f8faf7;padding:10px;border-radius:8px;font-size:13px;margin-bottom:10px;border:1px solid #e6ece4;'>" + bedBadge + "</div>" +
           "<p style='font-size:13px;color:#333;'><b>Rates:</b> " + f.rates + "</p></div>" +
           "<div style='display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px solid #f0f4ef;'>" +
-          "<span style='font-size:14px;font-weight:600;'>Rating: " + f.rating + "/5 (" + (f.reviews?.length || 0) + ")</span>" +
-          "<button class='button button-primary' type='button' onclick=\"openDetails('" + f.docId + "')\" style='padding:8px 14px;font-size:13px;'>View Details</button></div></article>";
+          "<span style='font-size:14px;font-weight:600;'>Rating: " + f.rating + "/5 (" + (f.reviews ? f.reviews.length : 0) + ")</span>" +
+          "<button class='button button-primary' type='button' onclick=\"openDetails('" + idArg + "', '" + f.name + "')\" style='padding:8px 14px;font-size:13px;'>View Details</button></div></article>";
       }).join("");
 
   container.innerHTML = "<div class='section-head'><div><div class='eyebrow section-eyebrow'>LIVE CLOUD DIRECTORY</div><h2>Explore hospitals & clinics</h2><p>Real-time synced data across Delhi.</p></div>" +
@@ -132,14 +133,15 @@ function searchPatientReport() {
   out.innerHTML = "<div style='padding:16px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;'><b style='color:#15803d;'>Report Found for ID: " + val + "</b><p style='margin-top:6px;'>Hospital: Satyawadi Raja Harish Chandra Hospital, Narela | Tests: CBC & Blood Sugar (Normal)</p></div>";
 }
 
-function openDetails(docId) {
-  const f = facilities.find(item => item.docId === docId);
+function openDetails(docId, name) {
+  const f = facilities.find(item => (docId && item.docId === docId) || item.name === name);
   const reviewsHtml = (f.reviews || []).map(r => "<div style='background:#f8faf7;padding:10px;border-radius:8px;margin-bottom:8px;font-size:13px;'><b>" + r.user + "</b> (" + r.rating + "/5)<p>" + r.text + "</p></div>").join("");
-  document.getElementById("dialog-content").innerHTML = "<h2>" + f.name + "</h2><p style='color:#555;margin-bottom:12px;'>" + f.area + " | Phone: " + f.phone + "</p><p><b>Beds Available:</b> General (" + f.generalBeds + ") | ICU (" + f.icuBeds + ")</p><p style='margin-top:8px;'><b>Rates:</b> " + f.rates + "</p><p style='margin-top:8px;'><b>Facilities:</b> " + f.facilities + "</p><p style='margin-top:8px;'><b>Doctors & Faculty:</b> " + f.faculty + "</p><h4 style='margin-top:14px;'>Reviews (" + f.rating + "/5)</h4><div style='max-height:130px;overflow-y:auto;margin:8px 0;'>" + reviewsHtml + "</div><div style='display:flex;gap:8px;margin-top:10px;'><input id='rev-name' placeholder='Name' style='width:100px;padding:8px;border:1px solid #ccc;border-radius:8px;'><select id='rev-star' style='padding:8px;border:1px solid #ccc;border-radius:8px;'><option value='5'>5</option><option value='4'>4</option><option value='3'>3</option><option value='2'>2</option><option value='1'>1</option></select><input id='rev-text' placeholder='Comment...' style='flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;'><button class='button button-primary' type='button' onclick=\"submitReview('" + f.docId + "')\">Post</button></div>";
+  document.getElementById("dialog-content").innerHTML = "<h2>" + f.name + "</h2><p style='color:#555;margin-bottom:12px;'>" + f.area + " | Phone: " + f.phone + "</p><p><b>Beds Available:</b> General (" + f.generalBeds + ") | ICU (" + f.icuBeds + ")</p><p style='margin-top:8px;'><b>Rates:</b> " + f.rates + "</p><p style='margin-top:8px;'><b>Facilities:</b> " + f.facilities + "</p><p style='margin-top:8px;'><b>Doctors & Faculty:</b> " + f.faculty + "</p><h4 style='margin-top:14px;'>Reviews (" + f.rating + "/5)</h4><div style='max-height:130px;overflow-y:auto;margin:8px 0;'>" + reviewsHtml + "</div><div style='display:flex;gap:8px;margin-top:10px;'><input id='rev-name' placeholder='Name' style='width:100px;padding:8px;border:1px solid #ccc;border-radius:8px;'><select id='rev-star' style='padding:8px;border:1px solid #ccc;border-radius:8px;'><option value='5'>5</option><option value='4'>4</option><option value='3'>3</option><option value='2'>2</option><option value='1'>1</option></select><input id='rev-text' placeholder='Comment...' style='flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;'><button class='button button-primary' type='button' onclick=\"submitReview('" + (f.docId || "") + "')\">Post</button></div>";
   document.getElementById("modal").showModal();
 }
 
 async function submitReview(docId) {
+  if (!docId) { alert("Please wait for cloud sync."); return; }
   const f = facilities.find(item => item.docId === docId);
   const user = document.getElementById("rev-name").value.trim() || "Patient";
   const rating = Number(document.getElementById("rev-star").value);
@@ -169,7 +171,7 @@ async function saveNewFacility(e) {
 }
 
 function openStaffModal() {
-  const options = facilities.map(f => "<option value='" + f.docId + "'>" + f.name + "</option>").join("");
+  const options = facilities.map(f => "<option value='" + (f.docId || "") + "'>" + f.name + "</option>").join("");
   document.getElementById("dialog-content").innerHTML = "<h2>Staff & Admin Workspace</h2><form onsubmit='updateStaffBeds(event)' style='display:flex;flex-direction:column;gap:10px;margin-top:10px;'><select id='staff-hosp' style='padding:10px;border:1px solid #ccc;border-radius:8px;'>" + options + "</select><input id='staff-gen' type='number' min='0' required placeholder='General Beds' style='padding:10px;border:1px solid #ccc;border-radius:8px;'><input id='staff-icu' type='number' min='0' required placeholder='ICU Beds' style='padding:10px;border:1px solid #ccc;border-radius:8px;'><button class='button button-primary' type='submit'>Update Live Status</button></form>";
   document.getElementById("modal").showModal();
 }
@@ -177,6 +179,7 @@ function openStaffModal() {
 async function updateStaffBeds(e) {
   e.preventDefault();
   const docId = document.getElementById("staff-hosp").value;
+  if (!docId) { alert("Please wait for cloud sync."); return; }
   await colRef.doc(docId).update({
     generalBeds: Number(document.getElementById("staff-gen").value),
     icuBeds: Number(document.getElementById("staff-icu").value),
@@ -202,3 +205,5 @@ function useMyLocation() {
     renderDirectory();
   }, () => { status.innerText = "Location permission allow nahi hui."; });
 }
+
+renderDirectory();
